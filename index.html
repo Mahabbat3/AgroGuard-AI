@@ -2,122 +2,194 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AgroGuard AI</title>
+
 <style>
-body { font-family: 'Arial', sans-serif; margin:0; padding:0; background:#f0f4f3; color:#333;}
-header {background:#2e7d32; color:white; padding:40px; text-align:center;}
-header h1 {margin:0; font-size:3em;}
-header p {font-size:1.2em; margin-top:10px;}
-.container {max-width:1000px; margin:auto; padding:20px;}
-.card {background:white; padding:25px; margin:20px 0; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:0.3s;}
-.card:hover {transform:scale(1.02);}
-h2 {color:#2e7d32;}
-.status {font-size:20px; font-weight:bold; color:red;}
-button {padding:12px 25px; background:#2e7d32; color:white; border:none; border-radius:5px; cursor:pointer; font-size:1em; margin-top:10px;}
-input[type="number"] {padding:5px; margin:5px; border-radius:5px; border:1px solid #ccc; width:80px;}
-.image-container{text-align:center; margin-top:20px;}
-img{max-width:80%; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-.chart-container {margin-top:20px; width:100%; max-width:600px; height:300px; margin-left:auto; margin-right:auto;}
-canvas {width:100% !important; height:100% !important;}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5fdf6;
+    color: #2e7d32;
+}
+
+/* Секции */
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+/* Заголовок */
+.hero {
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Карточки */
+.card {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Картинки */
+img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Кнопка */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #2e7d32;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+/* FAQ */
+.accordion {
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    background: #e8f5e9;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.panel {
+    max-height: 0;
+    overflow: hidden;
+    background: white;
+    transition: 0.3s;
+    padding: 0 10px;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+}
 </style>
 </head>
+
 <body>
 
-<header>
-  <h1>AgroGuard AI 🌱</h1>
-  <p>Система раннего прогнозирования болезней растений и предотвращения потерь урожая</p>
-</header>
+<!-- 1 экран -->
+<section class="section hero">
+    <div class="container">
+        <h1>AgroGuard AI</h1>
+        <p>Революционное устройство для предотвращения болезней растений</p>
+    </div>
+</section>
 
-<div class="container">
+<!-- О проекте -->
+<section class="section">
+    <div class="container card">
+        <h2>Как это работает</h2>
+        <p>AgroGuard AI анализирует почву и климат с помощью сенсоров и AI, прогнозируя болезни растений ещё до появления симптомов. Это позволяет фермерам действовать заранее и предотвращать потери урожая.</p>
+    </div>
+</section>
 
-  <!-- Потери -->
-  <div class="card">
-    <h2>🌍 Потери урожая в мире</h2>
-    <p>Сельское хозяйство является одной из ключевых отраслей мировой экономики,обеспечивающей продовольственную безопасность и устойчивое развитие общества.Каждый год фермеры теряют <strong>$220–300 млрд</strong> из-за болезней растений и неправильного ухода.</p>
-    <p>AgroGuard AI помогает снизить потери до <strong>20%</strong>, экономя миллионы долларов!</p>
-  </div>
+<!-- Проблема -->
+<section class="section">
+    <div class="container card">
+        <h2>Глобальная проблема</h2>
+        <p>Ежегодно до 40% урожая теряется из-за болезней. Потери составляют более $220 млрд. Большинство фермеров узнают о проблеме слишком поздно.</p>
+    </div>
+</section>
 
-  <!-- Данные растения -->
-  <div class="card">
-    <h2>📊 Текущее состояние растения</h2>
-    <p>Влажность почвы (%): <span id="soil">--</span></p>
-    <p>Температура (°C): <span id="temp">--</span></p>
-    <p class="status" id="status">Нет данных</p>
-    <p id="advice">Ожидание данных...</p>
-    <button onclick="updateData()">Обновить случайные данные</button>
-  </div>
+<!-- График -->
+<section class="section">
+    <div class="container card">
+        <h2>Анализ данных</h2>
+        <canvas id="chart"></canvas>
+    </div>
+</section>
 
-  <!-- Форма пользователя -->
-  <div class="card">
-    <h2>🖊 Проверьте свои данные</h2>
-    <p>Введите влажность (%) и температуру (°C):</p>
-    <input type="number" id="userSoil" placeholder="Влажность">
-    <input type="number" id="userTemp" placeholder="Температура">
-    <button onclick="checkUserData()">Проверить</button>
-    <p class="status" id="userStatus">Статус: --</p>
-    <p id="userAdvice">Рекомендации: --</p>
-  </div>
+<!-- Фото устройства -->
+<section class="section">
+    <div class="container card">
+        <h2>Наше устройство</h2>
+        <img src="device.png" alt="Устройство">
+    </div>
+</section>
 
-  <!-- График -->
-  <div class="card chart-container">
-    <h2>📈 История влажности</h2>
-    <canvas id="soilChart"></canvas>
-  </div>
+<!-- Польза -->
+<section class="section">
+    <div class="container card">
+        <h2>Почему это важно</h2>
+        <p>Снижение потерь даже на 10% спасает миллиарды долларов, уменьшает использование химикатов и помогает обеспечить продовольственную безопасность.</p>
+    </div>
+</section>
 
-  <!-- Изображение устройства -->
-  <div class="card image-container">
-    <h2>📷 Наш прототип</h2>
-    <img src="https://i.ibb.co/y4TxYfF/device.jpg" alt="AgroGuard AI устройство">
-    <p>Так выглядит наше устройство для измерения состояния почвы и прогнозирования заболеваний растений.</p>
-  </div>
+<!-- FAQ -->
+<section class="section">
+    <div class="container card">
+        <h2>Вопросы и ответы</h2>
 
-</div>
+        <button class="accordion">Что делает устройство?</button>
+        <div class="panel"><p>Предсказывает болезни растений заранее.</p></div>
+
+        <button class="accordion">Как использовать?</button>
+        <div class="panel"><p>Подключить к почве и следить за данными на сайте.</p></div>
+
+        <button class="accordion">Кому подходит?</button>
+        <div class="panel"><p>Фермерам и агрокомпаниям.</p></div>
+
+    </div>
+</section>
+
+<!-- QR -->
+<section class="section">
+    <div class="container card">
+        <h2>Попробуйте сами</h2>
+        <a href="https://mahabbat3.github.io/AgroGuard-AI/" target="_blank">
+            <img src="qrcode.png" style="max-width:200px;">
+        </a>
+        <p>Сканируйте QR-код или нажмите</p>
+    </div>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-let soilData = [];
-let tempData = [];
-
-function updateData() {
-  let soil = Math.floor(Math.random()*100);
-  let temp = Math.floor(Math.random()*35);
-  document.getElementById("soil").innerText = soil + "%";
-  document.getElementById("temp").innerText = temp + "°C";
-
-  if (soil<30){document.getElementById("status").innerText="Сухо";document.getElementById("advice").innerText="Увеличьте полив";}
-  else if (soil>70){document.getElementById("status").innerText="Риск грибка";document.getElementById("advice").innerText="Уменьшите полив";}
-  else{document.getElementById("status").innerText="Норма";document.getElementById("advice").innerText="Условия хорошие";}
-
-  soilData.push(soil);
-  if(soilData.length>10) soilData.shift();
-  updateChart();
-}
-
-function checkUserData() {
-  let soil = Number(document.getElementById("userSoil").value);
-  let temp = Number(document.getElementById("userTemp").value);
-  let statusText="", adviceText="";
-  if(soil<30){statusText="Сухо";adviceText="Увеличьте полив";}
-  else if(soil>70){statusText="Риск грибка";adviceText="Уменьшите полив";}
-  else{statusText="Норма";adviceText="Условия хорошие";}
-  document.getElementById("userStatus").innerText="Статус: "+statusText;
-  document.getElementById("userAdvice").innerText="Рекомендации: "+adviceText;
-  soilData.push(soil);
-  if(soilData.length>10) soilData.shift();
-  updateChart();
-}
-
 // График
-let ctx = document.getElementById('soilChart').getContext('2d');
-let chart = new Chart(ctx,{
-  type:'line',
-  data:{labels:["1","2","3","4","5","6","7","8","9","10"],datasets:[{label:'Влажность (%)',data:soilData,borderColor:'#2e7d32',fill:false}]},
-  options:{responsive:true, maintainAspectRatio:true}
+new Chart(document.getElementById("chart"), {
+    type: 'line',
+    data: {
+        labels: ["Янв", "Фев", "Мар", "Апр", "Май"],
+        datasets: [{
+            label: "Риск болезни",
+            data: [10, 30, 50, 70, 90]
+        }]
+    }
 });
-function updateChart(){
-  chart.data.datasets[0].data=soilData;
-  chart.update();
+
+// FAQ
+var acc = document.getElementsByClassName("accordion");
+for (let i = 0; i < acc.length; i++) {
+    acc[i].onclick = function() {
+        let panel = this.nextElementSibling;
+        panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
+    }
 }
 </script>
+
 </body>
 </html>
