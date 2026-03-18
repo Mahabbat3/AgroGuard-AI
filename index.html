@@ -8,25 +8,34 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     background: #f5fdf6;
     color: #2e7d32;
 }
 
-/* Секции */
+/* секции */
 .section {
     padding: 60px 20px;
     text-align: center;
 }
 
-/* Заголовок */
+/* анимация */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .hero {
     background: linear-gradient(135deg, #2e7d32, #66bb6a);
     color: white;
-}
-
-.hero h1 {
-    font-size: 40px;
 }
 
 .container {
@@ -34,41 +43,53 @@ body {
     margin: auto;
 }
 
-/* Карточки */
 .card {
     background: white;
-    padding: 20px;
+    padding: 25px;
     margin: 20px 0;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Картинки */
 img {
     max-width: 100%;
     border-radius: 10px;
 }
 
-/* Кнопка */
+/* кнопка */
 .btn {
-    display: inline-block;
-    padding: 12px 25px;
     background: #2e7d32;
     color: white;
+    padding: 12px 25px;
+    border: none;
     border-radius: 10px;
-    text-decoration: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* инпуты */
+.input {
+    width: 80%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* статус */
+.status {
+    font-size: 20px;
     margin-top: 15px;
 }
 
 /* FAQ */
 .accordion {
-    cursor: pointer;
     padding: 15px;
     width: 100%;
     border: none;
     background: #e8f5e9;
     margin-top: 10px;
-    font-size: 16px;
+    cursor: pointer;
 }
 
 .panel {
@@ -76,10 +97,9 @@ img {
     overflow: hidden;
     background: white;
     transition: 0.3s;
-    padding: 0 10px;
 }
 
-/* Адаптив */
+/* адаптив */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 28px;
@@ -90,96 +110,147 @@ img {
 
 <body>
 
-<!-- 1 экран -->
-<section class="section hero">
-    <div class="container">
-        <h1>AgroGuard AI</h1>
-        <p>Революционное устройство для предотвращения болезней растений</p>
-    </div>
+<!-- ГЛАВНЫЙ -->
+<section class="section hero fade-in">
+<div class="container">
+<h1>AgroGuard AI</h1>
+<p>Интеллектуальная система для предотвращения болезней растений</p>
+</div>
 </section>
 
-<!-- О проекте -->
-<section class="section">
-    <div class="container card">
-        <h2>Как это работает</h2>
-        <p>AgroGuard AI анализирует почву и климат с помощью сенсоров и AI, прогнозируя болезни растений ещё до появления симптомов. Это позволяет фермерам действовать заранее и предотвращать потери урожая.</p>
-    </div>
+<!-- О ПРОЕКТЕ -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Как работает</h2>
+<p>AgroGuard AI анализирует данные почвы, температуры и влажности, используя AI для прогнозирования заболеваний растений до появления симптомов.</p>
+</div>
 </section>
 
-<!-- Проблема -->
-<section class="section">
-    <div class="container card">
-        <h2>Глобальная проблема</h2>
-        <p>Ежегодно до 40% урожая теряется из-за болезней. Потери составляют более $220 млрд. Большинство фермеров узнают о проблеме слишком поздно.</p>
-    </div>
+<!-- ПРОБЛЕМА -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Глобальная проблема</h2>
+<p>До 40% урожая ежегодно теряется. Потери превышают $220 млрд. Фермеры узнают о болезнях слишком поздно.</p>
+</div>
 </section>
 
-<!-- График -->
-<section class="section">
-    <div class="container card">
-        <h2>Анализ данных</h2>
-        <canvas id="chart"></canvas>
-    </div>
+<!-- AI ПРОВЕРКА -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Проверка растения</h2>
+
+<input type="number" id="temp" placeholder="Температура (°C)" class="input"><br>
+<input type="number" id="humidity" placeholder="Влажность (%)" class="input"><br>
+<input type="number" id="soil" placeholder="Влажность почвы (%)" class="input"><br>
+
+<button class="btn" onclick="analyzePlant()">Анализировать</button>
+
+<p id="result" class="status"></p>
+
+</div>
 </section>
 
-<!-- Фото устройства -->
-<section class="section">
-    <div class="container card">
-        <h2>Наше устройство</h2>
-        <img src="device.png.jpeg" alt="Устройство">
-    </div>
+<!-- ГРАФИК -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Анализ данных</h2>
+<canvas id="chart"></canvas>
+</div>
 </section>
 
-<!-- Польза -->
-<section class="section">
-    <div class="container card">
-        <h2>Почему это важно</h2>
-        <p>Снижение потерь даже на 10% спасает миллиарды долларов, уменьшает использование химикатов и помогает обеспечить продовольственную безопасность.</p>
-    </div>
+<!-- УСТРОЙСТВО -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Наше устройство</h2>
+<img src="device.png.jpeg">
+</div>
+</section>
+
+<!-- ПОЛЬЗА -->
+<section class="section fade-in">
+<div class="container card">
+<h2>Почему это важно</h2>
+<p>Снижение потерь даже на 10% спасает миллиарды долларов и улучшает экологию.</p>
+</div>
 </section>
 
 <!-- FAQ -->
-<section class="section">
-    <div class="container card">
-        <h2>Вопросы и ответы</h2>
+<section class="section fade-in">
+<div class="container card">
+<h2>Вопросы и ответы</h2>
 
-        <button class="accordion">Что делает устройство?</button>
-        <div class="panel"><p>Предсказывает болезни растений заранее.</p></div>
+<button class="accordion">Что делает устройство?</button>
+<div class="panel"><p>Предсказывает болезни заранее.</p></div>
 
-        <button class="accordion">Как использовать?</button>
-        <div class="panel"><p>Подключить к почве и следить за данными на сайте.</p></div>
+<button class="accordion">Как использовать?</button>
+<div class="panel"><p>Подключить к почве и следить за данными.</p></div>
 
-        <button class="accordion">Кому подходит?</button>
-        <div class="panel"><p>Фермерам и агрокомпаниям.</p></div>
+<button class="accordion">Кому подходит?</button>
+<div class="panel"><p>Фермерам и компаниям.</p></div>
 
-    </div>
+</div>
 </section>
 
 <!-- QR -->
-<section class="section">
-    <div class="container card">
-        <h2>Попробуйте сами</h2>
-        <a href="https://mahabbat3.github.io/AgroGuard-AI/" target="_blank">
-            <img src="qrcodee.png" style="max-width:200px;">
-        </a>
-        <p>Сканируйте QR-код или нажмите</p>
-    </div>
+<section class="section fade-in">
+<div class="container card">
+<h2>Попробуйте сами</h2>
+
+<a href="https://твойлогин.github.io/репозиторий?v=3" target="_blank">
+<img src="qrcodee.png" style="max-width:200px;">
+</a>
+
+<p>Сканируйте QR-код или нажмите</p>
+
+</div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// График
-new Chart(document.getElementById("chart"), {
+
+// график
+let chart = new Chart(document.getElementById("chart"), {
     type: 'line',
     data: {
-        labels: ["Янв", "Фев", "Мар", "Апр", "Май"],
+        labels: ["1", "2", "3", "4", "5"],
         datasets: [{
-            label: "Риск болезни",
-            data: [10, 30, 50, 70, 90]
+            label: "Риск",
+            data: [20, 30, 40, 50, 60]
         }]
     }
 });
+
+// AI анализ
+function analyzePlant() {
+    let temp = document.getElementById("temp").value;
+    let humidity = document.getElementById("humidity").value;
+    let soil = document.getElementById("soil").value;
+
+    let risk = 0;
+
+    if (temp > 30) risk += 30;
+    if (humidity > 80) risk += 30;
+    if (soil < 30) risk += 40;
+
+    let result = "";
+
+    if (risk < 40) result = "Здорово 🌱";
+    else if (risk < 70) result = "Средний риск ⚠️";
+    else result = "Высокий риск 🚨";
+
+    document.getElementById("result").innerText = result + " (" + risk + "%)";
+
+    // обновление графика
+    chart.data.datasets[0].data = [
+        risk - 20,
+        risk - 10,
+        risk,
+        risk + 10,
+        risk + 20
+    ];
+    chart.update();
+}
 
 // FAQ
 var acc = document.getElementsByClassName("accordion");
@@ -189,6 +260,7 @@ for (let i = 0; i < acc.length; i++) {
         panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
     }
 }
+
 </script>
 
 </body>
